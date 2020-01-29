@@ -1,5 +1,4 @@
 import { UserRepository } from '../repository/user.repository';
-import { User } from '../entity/user.entity';
 import { getCustomRepository } from 'typeorm';
 /**
  * Cette classe est un service
@@ -13,6 +12,10 @@ export class UserService {
     // Business logic
     async getAll() {
         return await this.repository.find();
+    }
+
+    async getById(id: number) {
+        return await this.repository.findOne(id);
     }
 
     async create(user: any) {
