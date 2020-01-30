@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from './user.entity';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
 
 @Entity('representation')
 export class Representation {
@@ -29,4 +30,8 @@ export class Representation {
 
     @Column({type: 'boolean', nullable: false })
     forMember!: boolean;
+
+    @ManyToMany( type => User, user => user.representations)
+    @JoinTable()
+    users!: User[];
 }

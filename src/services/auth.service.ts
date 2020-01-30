@@ -22,7 +22,7 @@ export class AuthService {
     }
 
     // Crypte le password
-    async signup(user: User) {
+    async signUp(user: User) {
 
         const email = await this.repository.find({ where: { email: user.email } });
         console.log(email);
@@ -30,7 +30,7 @@ export class AuthService {
             user.password = await hash(user.password);
 
             user = this.repository.create(user);
-            // user = await this.repository.save(user);
+            user = await this.repository.save(user);
 
             const tokenString = randomBytes(12).toString('hex');
 

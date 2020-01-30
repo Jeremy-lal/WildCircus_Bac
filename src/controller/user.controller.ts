@@ -27,5 +27,19 @@ export const UserController = (app: Application) => {
         res.send(await userService.create(user));
     });
 
+    // userRouter.put('/:id', (req: Request, res: Response) => {
+    //     const id = parseInt(req.params.id, 10);
+    //     const comment = req.body;
+    //     // console.log(comment);
+    //     userService.update(comment, id);
+    //     res.send(comment);
+    // });
+
+    userRouter.post('/representation', async (req: Request, res: Response) => {
+        const userId = parseInt(req.body.userId, 10);
+        const representationId = parseInt(req.body.representationId, 10);
+        res.send(await userService.addRepresentationToUser(userId, representationId));
+      });
+
     app.use('/users', userRouter);
 };

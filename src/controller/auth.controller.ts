@@ -16,7 +16,7 @@ export const AuthController = (app: Application) => {
   authRouter.post('/signup', async (req: Request, res: Response) => {
     const user = req.body;
     try {
-      await authService.signup(user);
+      await authService.signUp(user);
       res.sendStatus(204);
     } catch (error) {
         res.status(409).send('Erreur lors de l\'inscription');
