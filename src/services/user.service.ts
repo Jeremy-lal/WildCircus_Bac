@@ -28,14 +28,19 @@ export class UserService {
 
     async addRepresentationToUser(userId: number, representationId: number) {
         const representation = await this.repreRepository.findOne(representationId);
-        console.log(representation);
         const user = await this.repository.findOne(userId, { relations: ['representations'] });
 
         if (user && representation) {
             user?.representations?.push(representation);
+            console.log(user);
             await this.repository.save(user);
         }
         return user;
     }
+
+    async getMe(id: number) {
+        console.log(1);
+        return await this.getById(id);
+      }
 
 }

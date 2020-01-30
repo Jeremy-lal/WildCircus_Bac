@@ -21,31 +21,34 @@ export class AuthService {
         this.userService = new UserService();
     }
 
-    // Crypte le password
-    async signUp(user: User) {
-
-        const email = await this.repository.find({ where: { email: user.email } });
-        console.log(email);
-        if (email == null || undefined || email.length === 0) {
-            user.password = await hash(user.password);
-
-            user = this.repository.create(user);
-            user = await this.repository.save(user);
-
-            const tokenString = randomBytes(12).toString('hex');
-
-            const token = new Token();
-            token.user = user;
-            token.value = tokenString;
-            this.tokenService.create(token);
-        } else {
-            throw new Error('Mail already used ');
+    private async getUserByEmail(email: string) {
+        if (await this.repository.findOne({ where: { email }, select: ['email', 'password'] })) {
+            return true;
         }
+    }
+
+    async signUp(user: User) {
+        if (await this.getUserByEmail(user.email)) {
+            throw new Error('ALREADY_EXIST');
+        }
+        user.password = await hash(user.password);
+
+        const tokenString = randomBytes(12).toString('hex');
+
+        user = this.repository.create(user);
+        user = await this.repository.save(user);
+
+        const token = new Token();
+        token.user = user;
+        token.value = tokenString;
+        this.tokenService.create(token);
+        return true;
+
     }
 
     async signIn(email: string, password: string) {
         const labelError = new Error('Invalide crendentials');
-        const users = await this.repository.find({ where: { email } });
+        const users = await this.repository.find({ where: { email }, relations: ['representations'] });
         const user = users[0];
 
         if (!user) {

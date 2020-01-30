@@ -22,18 +22,18 @@ export const UserController = (app: Application) => {
         res.send(await userService.getById(id));
     });
 
+    userRouter.get('/me', async (req: Request, res: Response) => {
+        const user = await userService.getMe((req as any).user.id);
+        if (!user) {
+          res.status(400).send('Aucun utuilisateur trouvé pour ce token');
+        }
+        res.send(user);
+      });
+
     userRouter.post('/', async (req: Request, res: Response) => {
         const user = req.body;
         res.send(await userService.create(user));
     });
-
-    // userRouter.put('/:id', (req: Request, res: Response) => {
-    //     const id = parseInt(req.params.id, 10);
-    //     const comment = req.body;
-    //     // console.log(comment);
-    //     userService.update(comment, id);
-    //     res.send(comment);
-    // });
 
     userRouter.post('/representation', async (req: Request, res: Response) => {
         const userId = parseInt(req.body.userId, 10);
