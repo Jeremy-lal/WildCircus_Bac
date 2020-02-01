@@ -23,11 +23,12 @@ export const UserController = (app: Application) => {
     });
 
     userRouter.get('/me', async (req: Request, res: Response) => {
-        const user = await userService.getMe((req as any).user.id);
-        if (!user) {
+      console.log(1);
+      const user = await userService.getMe((req as any).user.id);
+      if (!user) {
           res.status(400).send('Aucun utuilisateur trouvé pour ce token');
         }
-        res.send(user);
+      res.send(user);
       });
 
     userRouter.post('/', async (req: Request, res: Response) => {

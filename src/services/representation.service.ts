@@ -16,7 +16,7 @@ export class RepresentationService {
     }
 
     async getForAllMember() {
-        return await this.repository.find({ where: { forMember: false }});
+        return await this.repository.find({ where: { forMember: false } });
     }
 
     async create(representation: any) {
@@ -25,7 +25,7 @@ export class RepresentationService {
     }
 
     async update(representation: Representation, id: number) {
-        return await this.repository.update(id , representation);
+        return await this.repository.update(id, representation);
     }
 
     async delete(id: number) {
